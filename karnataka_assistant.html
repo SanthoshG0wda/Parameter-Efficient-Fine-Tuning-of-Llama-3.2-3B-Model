@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karnataka Schemes Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0f1117;
+    --bg2:       #181c27;
+    --bg3:       #1e2235;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.12);
+    --text:      #e8eaf0;
+    --text2:     #8b909e;
+    --text3:     #555c6e;
+    --accent:    #22c897;
+    --accent-bg: rgba(34,200,151,0.10);
+    --accent2:   #f4a742;
+    --accent2-bg:rgba(244,167,66,0.10);
+    --user-bg:   #1a2a3a;
+    --ai-bg:     #1a2233;
+    --danger:    #e05252;
+    --radius:    14px;
+    --radius-sm: 8px;
+    --font:      'DM Sans', system-ui, sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Sidebar ── */
+  aside {
+    width: 272px;
+    min-width: 272px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .logo-wrap {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .logo-icon svg { width: 20px; height: 20px; fill: #0f1117; }
+
+  .logo-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+    font-family: var(--mono);
+  }
+
+  .sidebar-section {
+    padding: 14px 12px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    font-weight: 600;
+  }
+
+  .sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 8px 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg3) transparent;
+  }
+
+  .category-group { margin-bottom: 4px; }
+
+  .cat-label {
+    font-size: 10.5px;
+    color: var(--text3);
+    font-weight: 500;
+    padding: 8px 8px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cat-label svg { width: 13px; height: 13px; opacity: 0.6; }
+
+  .quick-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 12.5px;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1.4;
+  }
+
+  .quick-btn:hover { background: var(--bg3); color: var(--text); }
+
+  .sidebar-footer {
+    padding: 12px 8px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: none;
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    width: 100%;
+    text-align: left;
+  }
+
+  .footer-btn:hover { background: var(--bg3); color: var(--text); }
+  .footer-btn svg { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+
+  .model-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border-radius: 99px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ── Model picker ── */
+  .model-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .refresh-btn:hover { background: var(--bg3); color: var(--text); }
+  .refresh-btn svg { width: 13px; height: 13px; }
+  .refresh-btn.spinning svg { animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .model-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg3) transparent;
+    padding-right: 2px;
+  }
+
+  .model-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .model-card:hover { border-color: var(--border2); background: #232840; }
+
+  .model-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  .model-radio {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--border2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.15s;
+  }
+
+  .model-card.selected .model-radio { border-color: var(--accent); }
+
+  .model-radio-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.15s;
+  }
+
+  .model-card.selected .model-radio-dot { opacity: 1; transform: scale(1); }
+
+  .model-info { flex: 1; min-width: 0; }
+
+  .model-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .model-card.selected .model-name { color: var(--accent); }
+
+  .model-meta {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .model-tag {
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: var(--mono);
+  }
+
+  .model-tag.fine-tuned { background: var(--accent-bg); color: var(--accent); }
+  .model-tag.base       { background: var(--bg);        color: var(--text3); border: 1px solid var(--border); }
+
+  .model-size {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+
+  .model-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: var(--text3);
+    font-size: 13px;
+  }
+
+  .model-empty svg { width: 28px; height: 28px; margin-bottom: 8px; opacity: 0.4; display: block; margin: 0 auto 8px; }
+
+  .model-error {
+    padding: 10px 12px;
+    background: rgba(224,82,82,0.08);
+    border: 1px solid rgba(224,82,82,0.2);
+    border-radius: var(--radius-sm);
+    color: #e05252;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .manual-input-wrap {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .manual-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+
+  /* Topbar model selector pill */
+  .model-switcher {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 99px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .model-switcher:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .model-switcher svg { width: 13px; height: 13px; }
+
+  /* ── Main ── */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* Top bar */
+  .topbar {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+    flex-shrink: 0;
+  }
+
+  .status-dot.offline { background: var(--danger); box-shadow: 0 0 0 3px rgba(224,82,82,0.15); }
+
+  .topbar-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .topbar-sub { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+
+  .topbar-actions { display: flex; gap: 6px; }
+
+  .icon-btn {
+    width: 34px; height: 34px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .icon-btn:hover { background: var(--bg3); border-color: var(--border2); color: var(--text); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  /* ── Chat area ── */
+  #chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg3) transparent;
+  }
+
+  .chat-inner { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* Empty state */
+  #empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .empty-icon {
+    width: 56px; height: 56px;
+    background: var(--accent-bg);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .empty-icon svg { width: 28px; height: 28px; color: var(--accent); }
+
+  .empty-title { font-size: 18px; font-weight: 500; color: var(--text); }
+  .empty-sub { font-size: 14px; color: var(--text2); max-width: 380px; line-height: 1.6; }
+
+  .suggestion-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    max-width: 560px;
+  }
+
+  .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 99px;
+    font-size: 13px;
+    color: var(--text2);
+    background: var(--bg2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+  /* Messages */
+  .msg {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.2s ease-out;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .msg.user .msg-avatar { background: var(--accent-bg); color: var(--accent); }
+  .msg.ai   .msg-avatar { background: var(--bg3); color: var(--text2); }
+  .msg.ai   .msg-avatar svg { width: 16px; height: 16px; }
+
+  .msg-body { flex: 1; min-width: 0; }
+
+  .msg-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .msg-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .msg-time { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+
+  .msg-content {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.75;
+    word-break: break-word;
+  }
+
+  .msg.user .msg-content {
+    background: var(--user-bg);
+    padding: 12px 16px;
+    border-radius: 4px 14px 14px 14px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .msg.ai .msg-content { color: var(--text); }
+
+  /* ── Rich response elements ── */
+  .msg-content p { margin-bottom: 10px; }
+  .msg-content p:last-child { margin-bottom: 0; }
+  .msg-content strong { color: var(--accent); font-weight: 500; }
+  .msg-content em { color: var(--text2); font-style: italic; }
+
+  .msg-content code {
+    font-family: var(--mono);
+    background: var(--bg3);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--accent2);
+    border: 1px solid var(--border);
+  }
+
+  /* Section header */
+  .r-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 18px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .r-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .r-header:first-child { margin-top: 0; }
+
+  /* Scheme intro banner */
+  .r-intro {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  /* Key-value card */
+  .r-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .r-card:last-child { margin-bottom: 0; }
+
+  .r-kv {
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    align-items: baseline;
+    gap: 0;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .r-kv:last-child { border-bottom: none; }
+  .r-kv:hover { background: var(--bg3); }
+
+  .r-key {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding-right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 2px;
+  }
+
+  .r-key-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .r-val {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* Key colour themes */
+  .rk-category  .r-key { color: #a78bfa; } .rk-category  .r-key-dot { background: #a78bfa; }
+  .rk-dept      .r-key { color: #60a5fa; } .rk-dept      .r-key-dot { background: #60a5fa; }
+  .rk-benefit   .r-key { color: var(--accent); } .rk-benefit .r-key-dot { background: var(--accent); }
+  .rk-elig      .r-key { color: var(--accent2); } .rk-elig  .r-key-dot { background: var(--accent2); }
+  .rk-docs      .r-key { color: #f87171; } .rk-docs      .r-key-dot { background: #f87171; }
+  .rk-level     .r-key { color: #94a3b8; } .rk-level     .r-key-dot { background: #94a3b8; }
+  .rk-mode      .r-key { color: #34d399; } .rk-mode      .r-key-dot { background: #34d399; }
+  .rk-link      .r-key { color: #38bdf8; } .rk-link      .r-key-dot { background: #38bdf8; }
+  .rk-note      .r-key { color: #fbbf24; } .rk-note      .r-key-dot { background: #fbbf24; }
+  .rk-default   .r-key { color: var(--text3); } .rk-default .r-key-dot { background: var(--text3); }
+
+  /* r-val link style */
+  .r-val a { color: #38bdf8; text-decoration: none; }
+  .r-val a:hover { text-decoration: underline; }
+
+  /* Inline pills (category / level badges) */
+  .r-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  /* Bullet / numbered lists */
+  .r-list {
+    margin: 4px 0 12px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .r-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .r-list li:last-child { border-bottom: none; }
+
+  .r-list-bullet {
+    width: 18px; height: 18px;
+    background: var(--accent-bg);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .r-list-bullet svg { width: 10px; height: 10px; color: var(--accent); }
+
+  .r-list-num {
+    width: 20px; height: 20px;
+    background: var(--bg3);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--accent2);
+    margin-top: 3px;
+  }
+
+  /* Note / warning block */
+  .r-note {
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.18);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: var(--text2);
+    margin: 10px 0;
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  .r-note svg { width: 15px; height: 15px; color: #fbbf24; flex-shrink: 0; margin-top: 3px; }
+
+  /* Error note */
+  .r-err {
+    background: rgba(239,68,68,0.07);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: #f87171;
+    margin: 10px 0;
+  }
+
+  .msg-content ul, .msg-content ol {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .msg-content li { margin-bottom: 4px; }
+
+  .msg-actions {
+    display: flex; gap: 6px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .msg:hover .msg-actions { opacity: 1; }
+
+  .action-btn {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text3);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+  }
+
+  .action-btn:hover { border-color: var(--border2); color: var(--text2); background: var(--bg2); }
+  .action-btn svg { width: 13px; height: 13px; }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex; align-items: center; gap: 5px;
+    padding: 14px 0;
+  }
+
+  .typing-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30%            { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* ── Input area ── */
+  .input-wrap {
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+
+  .input-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .input-box {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 12px 10px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .input-box:focus-within { border-color: var(--accent); }
+
+  #user-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14.5px;
+    resize: none;
+    max-height: 140px;
+    min-height: 24px;
+    line-height: 1.6;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg3) transparent;
+  }
+
+  #user-input::placeholder { color: var(--text3); }
+
+  .send-btn {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border: none;
+    border-radius: 9px;
+    color: #0f1117;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .send-btn:hover { opacity: 0.88; }
+  .send-btn:active { transform: scale(0.94); }
+  .send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+  .send-btn svg { width: 17px; height: 17px; }
+
+  .input-hint {
+    font-size: 11.5px;
+    color: var(--text3);
+    margin-top: 8px;
+    text-align: center;
+    font-family: var(--mono);
+  }
+
+  .input-hint kbd {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* ── Settings modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 420px;
+    max-width: 90vw;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-title svg { width: 18px; height: 18px; color: var(--accent); }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+
+  .field input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field input:focus { border-color: var(--accent); }
+
+  .field-hint { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+  /* Token controls */
+  .token-presets {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .preset-btn {
+    padding: 4px 11px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text2);
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .preset-btn:hover  { border-color: var(--accent); color: var(--accent); }
+  .preset-btn.active { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+  .token-slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .token-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--bg3);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .token-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 0 3px var(--accent-bg);
+    transition: box-shadow 0.15s;
+  }
+
+  .token-slider::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px var(--accent-bg); }
+
+  .token-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    min-width: 44px;
+    text-align: right;
+  }
+
+  /* Token counter on responses */
+  .token-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    padding: 3px 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+  }
+
+  .token-counter svg { width: 11px; height: 11px; }
+
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+  .btn-ghost {
+    padding: 9px 18px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+
+  .btn-primary {
+    padding: 9px 18px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #0f1117;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 99px; }
+
+  /* Mobile */
+  @media (max-width: 680px) {
+    aside { display: none; }
+    .chat-inner, .input-inner { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside>
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div class="logo-title">Karnataka Schemes</div>
+    <div class="logo-sub">AI Assistant</div>
+  </div>
+
+  <div class="sidebar-section">Quick Questions</div>
+
+  <div class="sidebar-scroll">
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Women Empowerment
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Who can apply for Gruha Lakshmi Scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What is the Shakti Scheme for free bus travel?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">How does the Udyogini Scheme help women?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Bhagyalakshmi Scheme for girl child benefits?</button>
+    </div>
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.08 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6"/></svg>
+        Youth & Employment
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What is Yuva Nidhi Scheme for unemployed graduates?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">How to apply for Karnataka Self Employment Scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Documents needed for Yuva Nidhi Scheme?</button>
+    </div>
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Health & Insurance
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What does Arogya Karnataka Scheme cover?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Who is eligible for Vajpayee Arogya Shree Scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What is Mukhyamantri Santwana Harish Scheme?</button>
+    </div>
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Education & Scholarships
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Pre-matric scholarship for SC/ST students?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What is the Arivu Education Loan Scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Prabhuddha Overseas Scholarship eligibility?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Vidyasiri Scholarship amount for OBC students?</button>
+    </div>
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        Agriculture & Farmers
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What subsidy does Krushi Bhagya Scheme offer?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">How to apply for Ganga Kalyana Scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Benefits of Karnataka Krushi Aranya Protsaha Yojane?</button>
+    </div>
+
+    <div class="category-group">
+      <div class="cat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+        Social Welfare
+      </div>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">What is Anna Bhagya free rice scheme?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">SC Marriage Assistance Scheme benefits?</button>
+      <button class="quick-btn" onclick="sendQuick(this.textContent)">Gruha Jyoti free electricity scheme details?</button>
+    </div>
+
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="footer-btn" onclick="clearChat()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.67"/></svg>
+      New conversation
+    </button>
+    <button class="footer-btn" onclick="openSettings()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Settings
+      <span class="model-badge" id="model-badge">loading…</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<main>
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="status-dot" id="status-dot"></div>
+      <div>
+        <div class="topbar-title">Karnataka Government Schemes</div>
+        <div class="topbar-sub" id="topbar-sub">Connecting to Ollama…</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="model-switcher" onclick="openSettings()" title="Switch model">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span id="topbar-model-name">loading…</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <button class="icon-btn" title="Clear chat" onclick="clearChat()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.67"/></svg>
+      </button>
+      <button class="icon-btn" title="Settings" onclick="openSettings()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="chat-area">
+    <div class="chat-inner" id="chat-inner">
+      <div id="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="empty-title">Karnataka Schemes Assistant</div>
+        <div class="empty-sub">Ask me anything about Karnataka government schemes — eligibility, benefits, documents, how to apply, and more.</div>
+        <div class="suggestion-chips">
+          <button class="chip" onclick="sendQuick(this.textContent)">What are the Five Guarantees schemes?</button>
+          <button class="chip" onclick="sendQuick(this.textContent)">Schemes for BPL families in Karnataka</button>
+          <button class="chip" onclick="sendQuick(this.textContent)">How to apply for Shakti Scheme?</button>
+          <button class="chip" onclick="sendQuick(this.textContent)">Schemes for minority communities</button>
+          <button class="chip" onclick="sendQuick(this.textContent)">Farmer subsidy schemes in Karnataka</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-wrap">
+    <div class="input-inner">
+      <div class="input-box">
+        <textarea
+          id="user-input"
+          rows="1"
+          placeholder="Ask about any Karnataka government scheme…"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="input-hint"><kbd>Enter</kbd> to send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> for new line</div>
+    </div>
+  </div>
+</main>
+
+<!-- ── Settings modal ── -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Connection Settings
+    </div>
+
+    <div class="field">
+      <label>Ollama Base URL</label>
+      <input type="text" id="setting-url" value="http://localhost:11434" placeholder="http://localhost:11434">
+      <div class="field-hint">Default port is 11434. Change if you're running Ollama on a different host or port.</div>
+    </div>
+
+    <div class="field">
+      <div class="model-picker-header">
+        <label style="margin-bottom:0">Available Models</label>
+        <button class="refresh-btn" id="refresh-btn" onclick="loadModels()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.67"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="model-list" id="model-list">
+        <div class="model-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Click Refresh to load models from Ollama
+        </div>
+      </div>
+      <div class="manual-input-wrap">
+        <div class="manual-label">Or enter model name manually</div>
+        <input type="text" id="setting-model" placeholder="e.g. karnataka-llama3" style="width:100%">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Temperature</label>
+      <input type="number" id="setting-temp" value="0.3" min="0" max="2" step="0.05" placeholder="0.3">
+      <div class="field-hint">Lower = more factual (recommended: 0.2–0.5). Higher = more creative but less accurate.</div>
+    </div>
+
+    <div class="field">
+      <label>Max Output Tokens</label>
+      <div class="token-presets">
+        <button class="preset-btn" onclick="setTokenPreset(512)">512</button>
+        <button class="preset-btn" onclick="setTokenPreset(1024)">1 K</button>
+        <button class="preset-btn" onclick="setTokenPreset(2048)">2 K</button>
+        <button class="preset-btn active" onclick="setTokenPreset(4096)">4 K</button>
+        <button class="preset-btn" onclick="setTokenPreset(8192)">8 K</button>
+      </div>
+      <div class="token-slider-wrap">
+        <input type="range" class="token-slider" id="setting-tokens"
+               min="256" max="8192" step="256" value="4096"
+               oninput="syncTokenDisplay(this.value)">
+        <span class="token-val" id="token-display">4096</span>
+      </div>
+      <div class="field-hint">Higher = longer, complete answers. If the model cuts off, increase this. 4096 recommended for scheme details.</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeSettings()">Cancel</button>
+      <button class="btn-primary" onclick="saveSettings()">Save & Connect</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SYSTEM_PROMPT = `You are a knowledgeable Karnataka government schemes assistant. Answer citizen queries accurately and concisely.
+
+RESPONSE FORMAT RULES — follow these strictly:
+1. Begin with ONE clear intro sentence (e.g. "The Shakti Scheme provides free bus travel for women in Karnataka.").
+2. Then use "Key: Value" lines for structured facts. Each field on its own line. Examples:
+   Category: Social Welfare / Women Transport Empowerment
+   Managing Department: Department of Transport, Government of Karnataka
+   Key Benefit: Free, unlimited travel on all KSRTC/NEKRTC/NWKRTC buses
+   Eligibility: All women residents of Karnataka with valid Karnataka photo ID
+   Required Documents: Aadhaar card, Karnataka address proof, passport photo
+   Mode of Application: Offline — apply at KSRTC depot or Grama One center
+   Level: State
+3. Use ## Section Title for multi-section answers (e.g. ## Eligibility, ## How to Apply).
+4. Use "- item" for bullet lists of multiple items under a single key.
+5. Use "> Note: ..." for important warnings or deadlines.
+6. Do NOT write long run-on sentences. Do NOT repeat the question back.
+7. Only use information from your training data. Do not hallucinate.
+8. If information is missing, say: "Not specified in available data. Contact [department]."`;
+
+let config = {
+  url:       localStorage.getItem('ollama_url')        || 'http://localhost:11434',
+  model:     localStorage.getItem('ollama_model')      || 'karnataka-llama3',
+  temp:      parseFloat(localStorage.getItem('ollama_temp')   || '0.3'),
+  maxTokens: parseInt(localStorage.getItem('ollama_max_tokens') || '4096'),
+};
+
+function buildSystemPrompt() {
+  return `You are a knowledgeable Karnataka government schemes assistant. Answer citizen queries accurately and completely.
+
+TOKEN BUDGET: You have ${config.maxTokens} tokens to respond. Use them to give a COMPLETE, thorough answer. Never truncate or trail off. If listing documents or steps, include every single one. End with a complete sentence.
+
+RESPONSE FORMAT RULES — follow these strictly:
+1. Begin with ONE clear intro sentence (e.g. "The Shakti Scheme provides free bus travel for women in Karnataka.").
+2. Then use "Key: Value" lines for structured facts. Each field on its own line. Examples:
+   Category: Social Welfare / Women Transport Empowerment
+   Managing Department: Department of Transport, Government of Karnataka
+   Key Benefit: Free, unlimited travel on all KSRTC/NEKRTC/NWKRTC buses
+   Eligibility: All women residents of Karnataka with valid Karnataka photo ID
+   Required Documents: Aadhaar card, Karnataka address proof, passport photo
+   Mode of Application: Offline — apply at KSRTC depot or Grama One center
+   Level: State
+3. Use ## Section Title for multi-section answers (e.g. ## Eligibility, ## How to Apply, ## Documents Required).
+4. Use "- item" for bullet lists of multiple items under a single key. List ALL items — do not summarise with "etc."
+5. Use "> Note: ..." for important warnings or deadlines.
+6. Do NOT write long run-on sentences. Do NOT repeat the question back.
+7. Only use information from your training data. Do not hallucinate.
+8. If information is missing, say: "Not specified in available data. Contact [department]."
+9. NEVER end mid-sentence. Always complete your final point before stopping.`;
+}
+
+let chatHistory = [];
+let isGenerating = false;
+
+// ── Init ──────────────────────────────────────────────────
+document.getElementById('user-input').addEventListener('input', () => {
+  const val = document.getElementById('user-input').value.trim();
+  document.getElementById('send-btn').disabled = !val || isGenerating;
+});
+
+document.getElementById('setting-url').value    = config.url;
+document.getElementById('setting-model').value  = config.model;
+document.getElementById('setting-temp').value   = config.temp;
+document.getElementById('setting-tokens').value = config.maxTokens;
+document.getElementById('token-display').textContent = config.maxTokens;
+syncPresetButtons(config.maxTokens);
+
+updateModelBadge();
+checkConnection();
+
+// ── Connection check ──────────────────────────────────────
+async function checkConnection() {
+  const dot = document.getElementById('status-dot');
+  const sub = document.getElementById('topbar-sub');
+  try {
+    const res = await fetch(`${config.url}/api/tags`, { signal: AbortSignal.timeout(4000) });
+    if (res.ok) {
+      const data = await res.json();
+      const models = (data.models || []).map(m => m.name);
+      const found  = models.some(m => m.startsWith(config.model));
+      dot.className = 'status-dot';
+      sub.textContent = found
+        ? `${config.model} · ready`
+        : `Connected — model "${config.model}" not found. Check settings.`;
+      if (!found) sub.style.color = '#f4a742';
+    } else {
+      throw new Error('bad response');
+    }
+  } catch {
+    dot.className = 'status-dot offline';
+    sub.textContent = `Cannot reach Ollama at ${config.url}`;
+    sub.style.color = '#e05252';
+  }
+}
+
+// ── Messaging ─────────────────────────────────────────────
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!document.getElementById('send-btn').disabled) sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function sendQuick(text) {
+  document.getElementById('user-input').value = text;
+  autoResize(document.getElementById('user-input'));
+  sendMessage();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const text  = input.value.trim();
+  if (!text || isGenerating) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('send-btn').disabled = true;
+  isGenerating = true;
+
+  document.getElementById('empty-state')?.remove();
+
+  // Append user message
+  chatHistory.push({ role: 'user', content: text });
+  appendMessage('user', text);
+
+  // Show typing indicator
+  const typingEl = appendTyping();
+
+  // Build messages array for Ollama
+  const messages = [
+    { role: 'system', content: buildSystemPrompt() },
+    ...chatHistory,
+  ];
+
+  try {
+    const response = await fetch(`${config.url}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model:    config.model,
+        messages: messages,
+        stream:   true,
+        options:  {
+          temperature: config.temp,
+          num_predict: config.maxTokens,   // max output tokens sent to Ollama
+          num_ctx:     Math.max(config.maxTokens * 2, 4096),  // context window ≥ 2× output
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ollama error ${response.status}: ${await response.text()}`);
+    }
+
+    typingEl.remove();
+
+    // Stream the response
+    const aiMsgEl   = appendMessage('ai', '');
+    const contentEl = aiMsgEl.querySelector('.msg-content');
+    let fullText = '';
+    let tokenCount = 0;
+
+    const reader  = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n').filter(l => l.trim());
+
+      for (const line of lines) {
+        try {
+          const json = JSON.parse(line);
+          const token = json?.message?.content || '';
+          fullText += token;
+          if (token) tokenCount++;
+          contentEl.innerHTML = renderMarkdown(fullText) + '<span class="cursor">▋</span>';
+          scrollToBottom();
+          if (json.done) break;
+        } catch { /* incomplete chunk */ }
+      }
+    }
+
+    // Remove cursor, finalise
+    contentEl.innerHTML = renderMarkdown(fullText);
+    chatHistory.push({ role: 'assistant', content: fullText });
+
+    // Token counter + copy button
+    const actionsEl = aiMsgEl.querySelector('.msg-actions');
+    actionsEl.innerHTML = `
+      <button class="action-btn" onclick="copyText(this, ${JSON.stringify(fullText).replace(/'/g,"&#39;")})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button>
+      <span class="token-counter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ~${estimateTokens(fullText)} tokens · limit ${config.maxTokens}
+      </span>`;
+
+  } catch (err) {
+    typingEl?.remove();
+    const errEl = appendMessage('ai', `**Connection error:** ${err.message}\n\nMake sure Ollama is running and the model name is correct in Settings.`);
+    errEl.querySelector('.msg-content').style.color = '#e05252';
+  }
+
+  isGenerating = false;
+  const v = document.getElementById('user-input').value.trim();
+  document.getElementById('send-btn').disabled = !v;
+  scrollToBottom();
+}
+
+// ── DOM helpers ───────────────────────────────────────────
+function appendMessage(role, text) {
+  const now  = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${role}`;
+
+  const avatarHTML = role === 'user'
+    ? `<div class="msg-avatar">U</div>`
+    : `<div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>`;
+
+  const name = role === 'user' ? 'You' : 'Karnataka Assistant';
+
+  wrap.innerHTML = `
+    ${avatarHTML}
+    <div class="msg-body">
+      <div class="msg-meta">
+        <span class="msg-name">${name}</span>
+        <span class="msg-time">${now}</span>
+      </div>
+      <div class="msg-content">${role === 'ai' ? renderMarkdown(text) : escapeHtml(text)}</div>
+      <div class="msg-actions"></div>
+    </div>`;
+
+  document.getElementById('chat-inner').appendChild(wrap);
+  scrollToBottom();
+  return wrap;
+}
+
+function appendTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai';
+  wrap.innerHTML = `
+    <div class="msg-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="msg-body">
+      <div class="msg-meta"><span class="msg-name">Karnataka Assistant</span></div>
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>`;
+  document.getElementById('chat-inner').appendChild(wrap);
+  scrollToBottom();
+  return wrap;
+}
+
+function scrollToBottom() {
+  const area = document.getElementById('chat-area');
+  area.scrollTop = area.scrollHeight;
+}
+
+// ── Rich response renderer ────────────────────────────────
+const KV_FIELDS = {
+  // Category
+  'category'           : 'rk-category',
+  'scheme category'    : 'rk-category',
+  'type'               : 'rk-category',
+  // Department
+  'managing department': 'rk-dept',
+  'department'         : 'rk-dept',
+  'managed by'         : 'rk-dept',
+  'authority'          : 'rk-dept',
+  'agency'             : 'rk-dept',
+  // Benefits / Offering
+  'key benefit'        : 'rk-benefit',
+  'benefit'            : 'rk-benefit',
+  'benefits'           : 'rk-benefit',
+  'offering'           : 'rk-benefit',
+  'financial assistance': 'rk-benefit',
+  'subsidy'            : 'rk-benefit',
+  'assistance'         : 'rk-benefit',
+  'amount'             : 'rk-benefit',
+  'scholarship amount' : 'rk-benefit',
+  // Eligibility
+  'target group'       : 'rk-elig',
+  'eligibility'        : 'rk-elig',
+  'eligible for'       : 'rk-elig',
+  'who can apply'      : 'rk-elig',
+  'beneficiaries'      : 'rk-elig',
+  'beneficiary'        : 'rk-elig',
+  'income limit'       : 'rk-elig',
+  'age group'          : 'rk-elig',
+  'age limit'          : 'rk-elig',
+  'gender'             : 'rk-elig',
+  'caste'              : 'rk-elig',
+  'residency'          : 'rk-elig',
+  // Documents
+  'required documents' : 'rk-docs',
+  'documents required' : 'rk-docs',
+  'documents needed'   : 'rk-docs',
+  'documents'          : 'rk-docs',
+  'paperwork'          : 'rk-docs',
+  // Level
+  'level'              : 'rk-level',
+  'scheme level'       : 'rk-level',
+  'coverage'           : 'rk-level',
+  // Mode / Application
+  'mode of application': 'rk-mode',
+  'application mode'   : 'rk-mode',
+  'mode'               : 'rk-mode',
+  'application process': 'rk-mode',
+  'how to apply'       : 'rk-mode',
+  'apply at'           : 'rk-mode',
+  // Links
+  'website'            : 'rk-link',
+  'portal'             : 'rk-link',
+  'official website'   : 'rk-link',
+  'official portal'    : 'rk-link',
+  'apply online'       : 'rk-link',
+  'link'               : 'rk-link',
+  // Notes
+  'note'               : 'rk-note',
+  'important'          : 'rk-note',
+  'deadline'           : 'rk-note',
+  'renewal'            : 'rk-note',
+  'contact'            : 'rk-note',
+};
+
+const ICON_CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+const ICON_NUM   = n => `${n}`;
+const ICON_INFO  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
+function classifyKey(raw) {
+  const k = raw.toLowerCase().trim();
+  for (const [pattern, cls] of Object.entries(KV_FIELDS)) {
+    if (k === pattern || k.startsWith(pattern)) return cls;
+  }
+  return 'rk-default';
+}
+
+function renderVal(val) {
+  // Linkify URLs
+  val = val.replace(/(https?:\/\/[^\s<>"]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  // Bold **text**
+  val = val.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Inline code
+  val = val.replace(/`([^`]+)`/g, '<code>$1</code>');
+  return val;
+}
+
+function renderMarkdown(raw) {
+  if (!raw) return '';
+
+  // Normalise: split on "\n" or ". " followed by a capital letter / known key pattern
+  // First do a smart pre-split: turn "Sentence. Key: value" into two lines
+  let text = raw
+    // Insert newlines before known field labels mid-sentence
+    .replace(/\.\s+([A-Z][a-zA-Z ]+:\s)/g, '.\n$1')
+    // Normalise Windows line endings
+    .replace(/\r\n/g, '\n')
+    .trim();
+
+  const lines = text.split('\n');
+  const parts = [];        // rendered HTML chunks
+  let kvGroup = [];        // batch of consecutive kv rows
+
+  function flushKV() {
+    if (!kvGroup.length) return;
+    parts.push(`<div class="r-card">${kvGroup.join('')}</div>`);
+    kvGroup = [];
+  }
+
+  let listBuf  = [];  // bullet list buffer
+  let numBuf   = [];  // numbered list buffer
+
+  function flushList() {
+    if (listBuf.length) {
+      const items = listBuf.map(t =>
+        `<li><span class="r-list-bullet">${ICON_CHECK}</span><span>${renderVal(escapeHtml(t))}</span></li>`
+      ).join('');
+      parts.push(`<ul class="r-list">${items}</ul>`);
+      listBuf = [];
+    }
+    if (numBuf.length) {
+      const items = numBuf.map((t, i) =>
+        `<li><span class="r-list-num">${i + 1}</span><span>${renderVal(escapeHtml(t))}</span></li>`
+      ).join('');
+      parts.push(`<ul class="r-list">${items}</ul>`);
+      numBuf = [];
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    // ── Section header: ## Text or ALL CAPS short lines
+    if (/^#{1,3}\s+/.test(line)) {
+      flushKV(); flushList();
+      const txt = line.replace(/^#{1,3}\s+/, '');
+      parts.push(`<div class="r-header">${escapeHtml(txt)}</div>`);
+      continue;
+    }
+
+    // ── Note / warning lines starting with > or NOTE:
+    if (/^>\s+/.test(line) || /^(note|important|warning):/i.test(line)) {
+      flushKV(); flushList();
+      const txt = line.replace(/^>\s+/, '').replace(/^(note|important|warning):\s*/i, '');
+      parts.push(`<div class="r-note">${ICON_INFO}<span>${renderVal(escapeHtml(txt))}</span></div>`);
+      continue;
+    }
+
+    // ── Bullet list items
+    if (/^[-*•]\s+/.test(line)) {
+      flushKV();
+      if (numBuf.length) flushList();
+      listBuf.push(line.replace(/^[-*•]\s+/, ''));
+      continue;
+    }
+
+    // ── Numbered list items
+    if (/^\d+[.)]\s+/.test(line)) {
+      flushKV();
+      if (listBuf.length) flushList();
+      numBuf.push(line.replace(/^\d+[.)]\s+/, ''));
+      continue;
+    }
+
+    // ── Key: Value pattern
+    const kvMatch = line.match(/^([^:]{2,40}):\s+(.+)$/);
+    if (kvMatch) {
+      flushList();
+      const [, keyRaw, valRaw] = kvMatch;
+      const cls = classifyKey(keyRaw);
+      const keyLabel = keyRaw.trim();
+      const valHtml  = renderVal(escapeHtml(valRaw.replace(/\.$/, '')));
+      kvGroup.push(`
+        <div class="r-kv ${cls}">
+          <div class="r-key"><span class="r-key-dot"></span>${escapeHtml(keyLabel)}</div>
+          <div class="r-val">${valHtml}</div>
+        </div>`);
+      continue;
+    }
+
+    // ── Plain paragraph / intro text
+    flushKV(); flushList();
+    const pHtml = renderVal(escapeHtml(line)
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'));
+    // First paragraph gets intro style; subsequent ones get plain <p>
+    const tag = parts.length === 0 ? 'r-intro' : null;
+    parts.push(tag ? `<p class="r-intro">${pHtml}</p>` : `<p>${pHtml}</p>`);
+  }
+
+  flushKV();
+  flushList();
+  return parts.join('');
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── Actions ───────────────────────────────────────────────
+function clearChat() {
+  chatHistory = [];
+  const inner = document.getElementById('chat-inner');
+  inner.innerHTML = '';
+  const empty = document.createElement('div');
+  empty.id = 'empty-state';
+  empty.innerHTML = `
+    <div class="empty-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="empty-title">New Conversation</div>
+    <div class="empty-sub">Ask me anything about Karnataka government schemes.</div>
+    <div class="suggestion-chips">
+      <button class="chip" onclick="sendQuick(this.textContent)">What are the Five Guarantees schemes?</button>
+      <button class="chip" onclick="sendQuick(this.textContent)">Schemes for BPL families in Karnataka</button>
+      <button class="chip" onclick="sendQuick(this.textContent)">How to apply for Shakti Scheme?</button>
+      <button class="chip" onclick="sendQuick(this.textContent)">Schemes for minority communities</button>
+    </div>`;
+  inner.appendChild(empty);
+  showToast('Conversation cleared');
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied`;
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
+    }, 2000);
+  });
+}
+
+// ── Settings ──────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('setting-url').value    = config.url;
+  document.getElementById('setting-model').value  = config.model;
+  document.getElementById('setting-temp').value   = config.temp;
+  document.getElementById('setting-tokens').value = config.maxTokens;
+  syncTokenDisplay(config.maxTokens);
+  syncPresetButtons(config.maxTokens);
+  document.getElementById('settings-modal').classList.add('open');
+  loadModels();
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+function saveSettings() {
+  const manualVal = document.getElementById('setting-model').value.trim();
+  config.url       = document.getElementById('setting-url').value.trim().replace(/\/$/, '');
+  config.model     = manualVal || config.model;
+  config.temp      = parseFloat(document.getElementById('setting-temp').value) || 0.3;
+  config.maxTokens = parseInt(document.getElementById('setting-tokens').value) || 4096;
+  localStorage.setItem('ollama_url',        config.url);
+  localStorage.setItem('ollama_model',      config.model);
+  localStorage.setItem('ollama_temp',       config.temp);
+  localStorage.setItem('ollama_max_tokens', config.maxTokens);
+  updateModelBadge();
+  closeSettings();
+  checkConnection();
+  showToast(`Saved — ${config.maxTokens} max tokens · model: ${config.model}`);
+}
+
+// ── Token slider helpers ───────────────────────────────────
+function syncTokenDisplay(val) {
+  document.getElementById('token-display').textContent = val;
+  syncPresetButtons(parseInt(val));
+}
+
+function syncPresetButtons(val) {
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.textContent.replace('K','')) * (btn.textContent.includes('K') ? 1024 : 1) === val
+      || (btn.textContent === '1 K' && val === 1024)
+      || (btn.textContent === '2 K' && val === 2048)
+      || (btn.textContent === '4 K' && val === 4096)
+      || (btn.textContent === '8 K' && val === 8192)
+      || (btn.textContent === '512' && val === 512));
+  });
+}
+
+function setTokenPreset(val) {
+  config.maxTokens = val;
+  document.getElementById('setting-tokens').value = val;
+  syncTokenDisplay(val);
+}
+
+// ── Token estimator (approx 4 chars per token) ────────────
+function estimateTokens(text) {
+  return Math.round(text.length / 4);
+}
+
+// ── Model loader ───────────────────────────────────────────
+let availableModels = [];
+
+async function loadModels() {
+  const listEl = document.getElementById('model-list');
+  const btn    = document.getElementById('refresh-btn');
+  const url    = document.getElementById('setting-url').value.trim().replace(/\/$/, '') || config.url;
+
+  btn.classList.add('spinning');
+  listEl.innerHTML = `<div class="model-empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.67"/></svg>
+    Loading models…
+  </div>`;
+
+  try {
+    const res = await fetch(`${url}/api/tags`, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    availableModels = (data.models || []).sort((a, b) => a.name.localeCompare(b.name));
+
+    if (availableModels.length === 0) {
+      listEl.innerHTML = `<div class="model-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        No models found. Run <code style="font-size:11px;background:var(--bg);padding:1px 5px;border-radius:3px">ollama pull &lt;model&gt;</code> first.
+      </div>`;
+    } else {
+      renderModelList(availableModels);
+    }
+  } catch (err) {
+    listEl.innerHTML = `<div class="model-error">
+      <strong>Could not reach Ollama</strong> at <code style="font-size:11px">${url}</code><br>
+      Make sure Ollama is running with <code style="font-size:11px">OLLAMA_ORIGINS="*" ollama serve</code>
+    </div>`;
+  }
+
+  btn.classList.remove('spinning');
+}
+
+function renderModelList(models) {
+  const listEl = document.getElementById('model-list');
+  listEl.innerHTML = '';
+
+  models.forEach(m => {
+    const isSelected  = m.name === config.model;
+    const sizeGB      = m.size ? (m.size / 1e9).toFixed(1) + ' GB' : '';
+    const family      = m.details?.family || '';
+    const paramSize   = m.details?.parameter_size || '';
+    const isFineTuned = m.name.toLowerCase().includes('karnataka') ||
+                        m.name.toLowerCase().includes('finetune') ||
+                        m.name.toLowerCase().includes('fine-tune') ||
+                        m.name.toLowerCase().includes('instruct');
+
+    const card = document.createElement('div');
+    card.className = `model-card${isSelected ? ' selected' : ''}`;
+    card.dataset.model = m.name;
+    card.onclick = () => selectModel(m.name);
+
+    card.innerHTML = `
+      <div class="model-radio">
+        <div class="model-radio-dot"></div>
+      </div>
+      <div class="model-info">
+        <div class="model-name">${m.name}</div>
+        <div class="model-meta">
+          ${family    ? `<span>${family}</span>` : ''}
+          ${paramSize ? `<span>${paramSize}</span>` : ''}
+          <span class="model-tag ${isFineTuned ? 'fine-tuned' : 'base'}">${isFineTuned ? 'fine-tuned' : 'base'}</span>
+        </div>
+      </div>
+      ${sizeGB ? `<div class="model-size">${sizeGB}</div>` : ''}`;
+
+    listEl.appendChild(card);
+  });
+}
+
+function selectModel(name) {
+  config.model = name;
+  document.getElementById('setting-model').value = name;
+
+  document.querySelectorAll('.model-card').forEach(c => {
+    const active = c.dataset.model === name;
+    c.classList.toggle('selected', active);
+  });
+
+  updateModelBadge();
+}
+
+function updateModelBadge() {
+  const short = config.model.length > 22 ? config.model.slice(0, 20) + '…' : config.model;
+  document.getElementById('model-badge').textContent = short;
+  document.getElementById('topbar-model-name').textContent = short;
+}
+
+document.getElementById('settings-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeSettings();
+});
+
+// ── Toast ─────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Cursor blink style ────────────────────────────────────
+const style = document.createElement('style');
+style.textContent = `.cursor { animation: blink 0.8s infinite; } @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
