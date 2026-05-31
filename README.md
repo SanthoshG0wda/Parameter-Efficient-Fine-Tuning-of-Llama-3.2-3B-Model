@@ -41,47 +41,59 @@ The project demonstrates that dataset curation quality has a **greater impact on
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Browser (karnataka_assistant.html)      │
-│  ┌──────────┐  ┌──────────────────────────────────────────┐ │
-│  │ Sidebar  │  │  Chat Area                               │ │
-│  │ Quick Qs │  │  ┌─────────────────────────────────────┐ │ │
-│  │ Settings │  │  │  Streaming responses with rich       │ │ │
-│  │          │  │  │  key:value cards, lists, notes       │ │ │
-│  └──────────┘  │  └─────────────────────────────────────┘ │ │
-│                │  ┌─────────────────────────────────────┐ │ │
-│                │  │  Input: textarea + send              │ │ │
-│                │  └─────────────────────────────────────┘ │ │
-│                └──────────────────────────────────────────┘ │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ POST /api/chat (stream=true)
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     Ollama Server (localhost:11434)            │
-│  ┌─────────────────────────────────────────────────────────┐ │
-│  │  llama.cpp inference on GGUF model                     │ │
-│  └─────────────────────────────────────────────────────────┘ │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ Loads GGUF file
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Karnataka-Llama-3.2-3B (Q4_K_M GGUF)             │
-│  Fine-tuned on 4,309 Q&A pairs over Karnataka schemes       │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph Browser["🌐 User Browser (karnataka_assistant.html)"]
+        direction TB
+        SID[Sidebar<br/>Quick Qs / Settings]
+        CHAT[Chat Area]
+        INP[Input: textarea + send]
+        STREAM[Streaming responses<br/>key:value cards]
+    end
+
+    subgraph Ollama["🦙 Ollama Server (localhost:11434)"]
+        LLAMA[llama.cpp inference<br/>on GGUF model]
+    end
+
+    subgraph Model["📦 Karnataka-Llama-3.2-3B (Q4_K_M GGUF)"]
+        FT[Fine-tuned on<br/>4,309 Q&A pairs]
+    end
+
+    Browser -->|POST /api/chat<br/>stream=true| Ollama
+    Ollama -->|Loads GGUF| Model
+
+    style Browser fill:#1a1a2e,stroke:#e94560,color:#fff
+    style SID fill:#16213e,stroke:#0f3460,color:#e94560
+    style CHAT fill:#16213e,stroke:#0f3460,color:#e94560
+    style INP fill:#16213e,stroke:#0f3460,color:#e94560
+    style STREAM fill:#16213e,stroke:#0f3460,color:#e94560
+    style Ollama fill:#1a1a2e,stroke:#e94560,color:#fff
+    style LLAMA fill:#16213e,stroke:#0f3460,color:#e94560
+    style Model fill:#1a1a2e,stroke:#e94560,color:#fff
+    style FT fill:#16213e,stroke:#0f3460,color:#e94560
 ```
 
 ### Data Pipeline
 
-```
-┌──────────┐    ┌──────────────┐    ┌────────────┐    ┌──────────────┐
-│ Source   │───▶│ Extraction & │───▶│ Curation & │───▶│ Formatting & │
-│ Ingestion│    │ Cleaning     │    │ Q&A Gen    │    │ Fine-Tune    │
-└──────────┘    └──────────────┘    └────────────┘    └──────────────┘
-      │                │                  │                  │
-      ▼                ▼                  ▼                  ▼
-  12 portals      140+ PDFs         1,200+ Q&A         4,309 SFT
-  crawled          parsed            pairs curated      records
+```mermaid
+graph LR
+    INGRESS["📥 Source Ingestion"] --> CLEAN["🧹 Extraction & Cleaning"]
+    CLEAN --> CURATE["📝 Curation & Q&A Gen"]
+    CURATE --> TRAIN["⚡ Formatting & Fine-Tune"]
+
+    INGRESS_STATS["12 portals<br/>crawled"] --- INGRESS
+    CLEAN_STATS["140+ PDFs<br/>parsed"] --- CLEAN
+    CURATE_STATS["1,200+ Q&A<br/>pairs curated"] --- CURATE
+    TRAIN_STATS["4,309 SFT<br/>records"] --- TRAIN
+
+    style INGRESS fill:#4e54c8,stroke:#8f94fb,color:#fff
+    style CLEAN fill:#11998e,stroke:#38ef7d,color:#fff
+    style CURATE fill:#f2994a,stroke:#f2c94c,color:#fff
+    style TRAIN fill:#eb3349,stroke:#f45c43,color:#fff
+    style INGRESS_STATS fill:#3d3f8a,stroke:#8f94fb,color:#ddd
+    style CLEAN_STATS fill:#0d7a6e,stroke:#38ef7d,color:#ddd
+    style CURATE_STATS fill:#c47a2e,stroke:#f2c94c,color:#ddd
+    style TRAIN_STATS fill:#b32032,stroke:#f45c43,color:#ddd
 ```
 
 ---
