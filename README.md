@@ -1,8 +1,8 @@
-# SPIRE — Karnataka Government Schemes AI Assistant
+# Karnataka Government Schemes AI Assistant
 
 **Parameter-Efficient Fine-Tuning of Large Language Models for Domain-Specific Question Answering**
 
-SPIRE is a domain-specific AI assistant that answers citizen queries about Karnataka state government schemes. It uses a fine-tuned **Llama 3.2 3B Instruct** model with **QLoRA (4-bit quantization)** to deliver accurate, structured information about eligibility, benefits, documents, and application procedures for 30+ government schemes.
+A domain-specific AI assistant that answers citizen queries about Karnataka state government schemes. It uses a fine-tuned **Llama 3.2 3B Instruct** model with **QLoRA (4-bit quantization)** to deliver accurate, structured information about eligibility, benefits, documents, and application procedures for 30+ government schemes.
 
 Built by **Santhosh Gowda M**, Research Intern at **SPIRE Lab**.
 
@@ -29,7 +29,7 @@ Built by **Santhosh Gowda M**, Research Intern at **SPIRE Lab**.
 
 ## Overview
 
-Government scheme information in India is often scattered across dozens of portals and PDFs, making it difficult for citizens to find accurate answers. SPIRE addresses this by:
+Government scheme information in India is often scattered across dozens of portals and PDFs, making it difficult for citizens to find accurate answers. This project addresses this by:
 
 1. **Curating a high-quality dataset** — Crawling 12 government portals and processing 140+ PDFs to create 1,200+ Q&A pairs across 30+ schemes
 2. **Fine-tuning a small LLM** — Using QLoRA on Llama 3.2 3B to produce structured, factually-grounded answers
@@ -393,7 +393,7 @@ If you use this work in your research, please cite:
 ```bibtex
 @misc{spire-karnataka-assistant,
   author = {Santhosh Gowda M},
-  title = {SPIRE: Parameter-Efficient Fine-Tuning of LLMs for Karnataka Government Scheme Question Answering},
+  title = {Parameter-Efficient Fine-Tuning of LLMs for Karnataka Government Scheme Question Answering},
   year = {2025},
   publisher = {SPIRE Lab}
 }
